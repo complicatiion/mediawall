@@ -77,6 +77,18 @@ Select a video from the wall. Playback opens in the integrated bottom dock playe
 ### 5. Save and restore your local database
 Export your local JSON database if you want to keep a backup of your metadata, favorites, and settings. Import it later to restore your setup.
 
+### 6. Categories (categories.txt)
+Set up your Categories file in Settings or in categories\categories.txt file directly.
+An Import/Export function is implemented, the Syntax in categories.txt is plain and simple, one category each line.
+
+Example:
+```text
+categories.txt
+├── action
+└── documentation
+
+```
+
 ## Important limitation
 
 MediaWall runs without a backend, which keeps it simple, but this also means the browser controls access to local files.
