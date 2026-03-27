@@ -1,6 +1,6 @@
-# MediaWall Player
+# MediaWall (Media Center/Player)
 
-MediaWall is a local-first media wall for videos and pictures that runs directly in a web browser.
+MediaWall is a local media (center) player for videos and pictures that runs directly in a web browser.
 
 It is built as a lightweight HTML, CSS, and JavaScript project with a dark interface, a centered browsing experience, and a bottom dock player inspired by media center layouts. The main goal is simple: open `index.html`, import your local media folders, and browse your content without needing a PHP server or a more complex backend setup.
 
