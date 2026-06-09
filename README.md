@@ -15,6 +15,14 @@ MediaWall lets you build a small local media library inside the browser. It can 
 
 The application is designed for local use and quick access. It is especially useful if you want a simple media wall prototype, a local browser-based media launcher, or a foundation for a larger media project.
 
+## Previews
+
+![Preview 1](preview/preview1.jpg)
+![Preview 2](preview/preview2.jpg)
+![Preview 3](preview/preview3.jpg)
+![Preview 4](preview/preview4.jpg)
+![Preview 5](preview/preview5.jpg)
+
 ## Main features
 
 - Direct browser start via `index.html`
@@ -32,29 +40,6 @@ The application is designed for local use and quick access. It is especially use
 - JSON export and import for settings and metadata
 - Responsive layout for desktop and mobile use
 
-## Previews
-
-![Preview 1](preview/preview1.jpg)
-![Preview 2](preview/preview2.jpg)
-![Preview 3](preview/preview3.jpg)
-![Preview 4](preview/preview4.jpg)
-![Preview 5](preview/preview5.jpg)
-
-## Project structure
-
-```text
-MediaWall/
-├── index.html
-└── assets/
-    ├── media/
-    ├── fonts/
-    ├── css/
-    │   └── styles.css
-    └── js/
-        ├── app.js
-        ├── config.js
-        └── storage.js
-```
 
 ## How to use it
 
