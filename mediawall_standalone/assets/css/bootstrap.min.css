@@ -1,0 +1,11 @@
+:root{--bs-body-font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;--bs-body-line-height:1.5;--bs-body-color:#fff;--bs-body-bg:#000;--bs-border-radius:.75rem;--bs-border-radius-sm:.5rem;--bs-btn-padding-y:.75rem;--bs-btn-padding-x:1rem;--bs-btn-font-size:1rem;--bs-btn-font-weight:600;--bs-btn-border-width:1px;--bs-btn-border-radius:999px;--bs-btn-line-height:1.2;--bs-btn-transition:all .18s ease-in-out}
+*,*::before,*::after{box-sizing:border-box}
+button,input,select,textarea{margin:0;font-family:inherit;font-size:inherit;line-height:inherit}
+button{cursor:pointer}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:var(--bs-btn-padding-y) var(--bs-btn-padding-x);font-size:var(--bs-btn-font-size);font-weight:var(--bs-btn-font-weight);line-height:var(--bs-btn-line-height);border:var(--bs-btn-border-width) solid transparent;border-radius:var(--bs-btn-border-radius);text-decoration:none;user-select:none;vertical-align:middle;background:transparent;color:inherit;transition:var(--bs-btn-transition)}
+.btn-sm{padding:.5rem .8rem;font-size:.875rem;border-radius:999px}
+.btn-primary{color:#fff;background:#6f5cff;border-color:#6f5cff}
+.btn-primary:hover{filter:brightness(1.05)}
+.btn-secondary{color:#fff;background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.12)}
+.btn-secondary:hover{background:rgba(255,255,255,.08)}
+/* Copyright © sksdesign 2026 */

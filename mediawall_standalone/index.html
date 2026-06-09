@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>MediaWall</title>
+  <meta name="description" content="MediaWall local browser media wall">
+  <link rel="icon" type="image/png" href="assets/media/favicon.png">
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" data-nav="home" aria-label="MediaWall home">
+        <img src="assets/media/logo.png" alt="MediaWall logo" class="brand-logo">
+        <span class="brand-name">MediaWall</span>
+      </a>
+
+      <nav class="nav-strip" aria-label="Primary navigation">
+        <button class="nav-link is-active" data-nav="home" type="button">Home</button>
+        <button class="nav-link" data-nav="wall" type="button">Wall</button>
+        <button class="nav-link" data-nav="categories" type="button">Categories</button>
+        <button class="nav-link" data-nav="folders" type="button">Folders</button>
+        <button class="nav-link" data-nav="favorites" type="button">Favorites</button>
+        <button class="nav-link" data-nav="pictures" type="button">Pictures</button>
+      </nav>
+
+      <div class="topbar-tools">
+        <label class="search-wrap" for="globalSearch" aria-label="Search media">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 4a6.5 6.5 0 1 0 4.03 11.6l4.43 4.43 1.41-1.41-4.43-4.43A6.5 6.5 0 0 0 10.5 4Zm0 2a4.5 4.5 0 1 1 0 9.001A4.5 4.5 0 0 1 10.5 6Z"/></svg>
+          <input id="globalSearch" class="search-input" type="search" placeholder="Search titles, folders, tags, categories..." autocomplete="off">
+        </label>
+
+        <button class="icon-button random-prominent text-only" id="randomButton" type="button" title="Play random video">
+          <span>Random</span>
+        </button>
+
+        <button class="icon-button" id="settingsButton" type="button" title="Open settings">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m19.14 12.94.04-.94-.04-.94 2.03-1.58a.6.6 0 0 0 .14-.77l-1.92-3.32a.6.6 0 0 0-.73-.27l-2.39.96a7.12 7.12 0 0 0-1.63-.94l-.36-2.54a.58.58 0 0 0-.58-.5h-3.84a.58.58 0 0 0-.58.5l-.36 2.54c-.58.22-1.13.54-1.63.94l-2.39-.96a.6.6 0 0 0-.73.27L2.69 8.7a.6.6 0 0 0 .14.77l2.03 1.58-.04.94.04.94-2.03 1.58a.6.6 0 0 0-.14.77l1.92 3.32a.6.6 0 0 0 .73.27l2.39-.96c.5.4 1.05.72 1.63.94l.36 2.54a.58.58 0 0 0 .58.5h3.84a.58.58 0 0 0 .58-.5l.36-2.54c.58-.22 1.13-.54 1.63-.94l2.39.96a.6.6 0 0 0 .73-.27l1.92-3.32a.6.6 0 0 0-.14-.77l-2.03-1.58ZM12 15.5A3.5 3.5 0 1 1 12 8a3.5 3.5 0 0 1 0 7.5Z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="page-shell">
+      <section class="view is-active" data-view="home">
+        <div class="home-stack">
+          <div class="hero-panel hero-panel-clean">
+            <div>
+              <p class="eyebrow">Local media center</p>
+              <h1 class="hero-title">MEDIA WALL</h1>
+              <p class="hero-copy">Import folders, search the library, manage favorites, browse folders and categories, store local metadata, and control playback from the integrated bottom dock player.</p>
+            </div>
+            <div class="hero-actions hero-actions-inline">
+              <button class="btn btn-primary" id="heroSettingsButton" type="button">Open settings</button>
+              <button class="btn btn-secondary" data-nav="wall" type="button">Open wall</button>
+            </div>
+          </div>
+
+          <div class="stats-grid home-stats-grid" id="statsGrid"></div>
+
+          <div class="dashboard-row">
+            <div class="section-head">
+              <div><h2>Recent additions</h2><p class="muted">Latest indexed videos from the last local import.</p></div>
+            </div>
+            <div class="media-grid compact home-media-grid" id="homeRecentGrid"></div>
+          </div>
+
+          <div class="dashboard-row">
+            <div class="section-head">
+              <div><h2>Most viewed</h2><p class="muted">Videos with the highest local view count.</p></div>
+            </div>
+            <div class="media-grid compact home-media-grid" id="homePopularGrid"></div>
+          </div>
+
+          <div class="dashboard-row">
+            <div class="section-head">
+              <div><h2>Favorites</h2><p class="muted">Quick access to starred videos and pictures.</p></div>
+            </div>
+            <div class="media-grid compact home-media-grid" id="homeFavoritesGrid"></div>
+          </div>
+
+          <div class="dashboard-row">
+            <div class="section-head">
+              <div><h2>Pictures</h2><p class="muted">Recently imported images from the current local picture library.</p></div>
+            </div>
+            <div class="media-grid compact home-media-grid" id="homePicturesGrid"></div>
+          </div>
+
+          <div class="dashboard-row">
+            <div class="section-head">
+              <div><h2>Categories</h2><p class="muted">Quick category search cards based on your imported category list.</p></div>
+            </div>
+            <div class="category-card-grid compact home-category-grid" id="homeCategoriesGrid"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" data-view="wall">
+        <div class="view-stack">
+          <div class="section-head">
+            <div><h2>Video wall</h2><p class="muted">All indexed videos in one responsive grid.</p></div>
+            <div class="toolbar">
+              <select id="videoSort" class="select-control">
+                <option value="date_desc">Date: newest first</option>
+                <option value="date_asc">Date: oldest first</option>
+                <option value="name_asc">Title: A → Z</option>
+                <option value="name_desc">Title: Z → A</option>
+                <option value="size_desc">Size: largest first</option>
+                <option value="size_asc">Size: smallest first</option>
+                <option value="views_desc">Views: most played</option>
+              </select>
+              <button class="btn btn-secondary" id="videoImportButton" type="button">Import videos</button>
+            </div>
+          </div>
+          <div class="wall-meta" id="videoWallMeta"></div>
+          <div class="media-grid" id="videoWallGrid"></div>
+        </div>
+      </section>
+
+      <section class="view" data-view="categories">
+        <div class="view-stack">
+          <div class="section-head">
+            <div><h2>Categories</h2><p class="muted">Click a category card to search imported media by file name and path.</p></div>
+            <div class="toolbar">
+              <button class="btn btn-secondary" id="importCategoriesQuickButton" type="button">Import categories.txt</button>
+              <button class="btn btn-secondary" id="exportCategoriesQuickButton" type="button">Export categories.txt</button>
+            </div>
+          </div>
+          <div class="wall-meta" id="categoriesMeta"></div>
+          <div class="category-card-grid" id="categoriesGrid"></div>
+          <div class="dashboard-row">
+            <div class="section-head">
+              <div><h2>Category results</h2><p class="muted" id="categoryResultsLabel">Choose a category to search the current library.</p></div>
+            </div>
+            <div class="wall-meta" id="categoryResultsMeta"></div>
+            <div class="media-grid" id="categoryResultsGrid"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" data-view="folders">
+        <div class="view-stack">
+          <div class="section-head">
+            <div><h2>Folders</h2><p class="muted">Browse only the indexed folder tree first, then open a folder to see the direct videos inside it.</p></div>
+            <div class="toolbar">
+              <button class="btn btn-secondary" id="folderUpButton" type="button">Up one level</button>
+              <button class="btn btn-secondary" id="resetFolderFilterButton" type="button">Go to root</button>
+            </div>
+          </div>
+          <div class="folder-breadcrumbs" id="folderBreadcrumbs"></div>
+          <div class="wall-meta" id="folderMeta"></div>
+          <div class="folder-card-grid" id="folderGrid"></div>
+
+          <div class="dashboard-row">
+            <div class="section-head">
+              <div><h2>Folder contents</h2><p class="muted" id="folderItemsLabel">Open a folder to show the videos stored directly in it.</p></div>
+            </div>
+            <div class="wall-meta" id="folderItemsMeta"></div>
+            <div class="media-grid" id="folderItemsGrid"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" data-view="favorites">
+        <div class="view-stack">
+          <div class="section-head">
+            <div><h2>Favorites</h2><p class="muted">Only your starred videos and pictures.</p></div>
+            <div class="toolbar">
+              <select id="favoriteSort" class="select-control">
+                <option value="date_desc">Date: newest first</option>
+                <option value="date_asc">Date: oldest first</option>
+                <option value="name_asc">Title: A → Z</option>
+                <option value="name_desc">Title: Z → A</option>
+                <option value="size_desc">Size: largest first</option>
+                <option value="size_asc">Size: smallest first</option>
+                <option value="views_desc">Views: most played</option>
+              </select>
+            </div>
+          </div>
+          <div class="wall-meta" id="favoritesMeta"></div>
+          <div class="media-grid" id="favoritesGrid"></div>
+        </div>
+      </section>
+
+      <section class="view" data-view="pictures">
+        <div class="view-stack">
+          <div class="section-head">
+            <div><h2>Pictures</h2><p class="muted">Image wall with a separate local folder import.</p></div>
+            <div class="toolbar">
+              <select id="imageSort" class="select-control">
+                <option value="date_desc">Date: newest first</option>
+                <option value="date_asc">Date: oldest first</option>
+                <option value="name_asc">Title: A → Z</option>
+                <option value="name_desc">Title: Z → A</option>
+                <option value="size_desc">Size: largest first</option>
+                <option value="size_asc">Size: smallest first</option>
+              </select>
+              <button class="btn btn-secondary" id="imageImportButton" type="button">Import pictures</button>
+            </div>
+          </div>
+          <div class="wall-meta" id="pictureWallMeta"></div>
+          <div class="media-grid" id="pictureWallGrid"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="drawer-backdrop" id="settingsBackdrop" hidden></div>
+  <aside class="settings-drawer" id="settingsDrawer" aria-hidden="true">
+    <div class="drawer-head">
+      <div>
+        <p class="eyebrow">Local browser setup</p>
+        <h2>Settings</h2>
+      </div>
+      <button class="icon-button close-drawer" id="closeSettingsButton" type="button" aria-label="Close settings">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m18.3 5.71-1.41-1.42L12 9.17 7.11 4.29 5.7 5.71 10.58 10.6 5.7 15.49l1.41 1.41L12 12l4.89 4.9 1.41-1.41-4.88-4.89 4.88-4.89Z"/></svg>
+      </button>
+    </div>
+
+    <div class="settings-content">
+      <section class="settings-card">
+        <h3>Appearance</h3>
+        <div class="settings-grid two">
+          <label>
+            <span>Accent color</span>
+            <input type="color" id="accentColorInput" value="#6f5cff">
+          </label>
+          <label>
+            <span>Start page</span>
+            <select id="startPageInput" class="dark-select">
+              <option value="home">Home</option>
+              <option value="wall">Wall</option>
+              <option value="categories">Categories</option>
+              <option value="folders">Folders</option>
+              <option value="favorites">Favorites</option>
+              <option value="pictures">Pictures</option>
+            </select>
+          </label>
+        </div>
+        <div class="grid-density-group">
+          <span>Grid density</span>
+          <div class="density-buttons" id="gridDensityButtons">
+            <button class="density-button" data-grid="4" type="button">4 / row</button>
+            <button class="density-button" data-grid="6" type="button">6 / row</button>
+            <button class="density-button" data-grid="8" type="button">8 / row</button>
+            <button class="density-button" data-grid="12" type="button">12 / row</button>
+            <button class="density-button" data-grid="16" type="button">16 / row</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="settings-card">
+        <h3>Library import</h3>
+        <div class="settings-grid">
+          <label>
+            <span>Video library folder name</span>
+            <input type="text" id="videoFolderLabelInput" placeholder="Example: Videos">
+          </label>
+          <div class="button-stack">
+            <button class="btn btn-primary" id="pickVideoFolderButton" type="button">Import video folder</button>
+            <button class="btn btn-secondary" id="relinkVideoFolderButton" type="button">Re-import video folder</button>
+          </div>
+
+          <label>
+            <span>Image library folder name</span>
+            <input type="text" id="imageFolderLabelInput" placeholder="Example: Pictures">
+          </label>
+          <div class="button-stack">
+            <button class="btn btn-primary" id="pickImageFolderButton" type="button">Import image folder</button>
+            <button class="btn btn-secondary" id="relinkImageFolderButton" type="button">Re-import image folder</button>
+          </div>
+        </div>
+        <p class="settings-help">Direct browser mode cannot read arbitrary local paths automatically after a restart. Import the folders again when you want the real media files to become available in the current session.</p>
+      </section>
+
+      <section class="settings-card">
+        <h3>Categories</h3>
+        <label>
+          <span>Categories list</span>
+          <textarea id="categoriesTextInput" placeholder="One category per line"></textarea>
+        </label>
+        <div class="button-grid">
+          <button class="btn btn-secondary" id="importCategoriesButton" type="button">Import categories.txt</button>
+          <button class="btn btn-secondary" id="exportCategoriesButton" type="button">Export categories.txt</button>
+          <button class="btn btn-secondary danger-soft" id="clearCategoriesButton" type="button">Clear categories</button>
+        </div>
+        <p class="settings-help">Categories are stored locally in the browser and can be imported from or exported to a simple text file with one category per line.</p>
+      </section>
+
+      <section class="settings-card">
+        <h3>Behavior</h3>
+        <div class="checkbox-grid">
+          <label class="checkbox-row">
+            <input type="checkbox" id="rememberPlaybackInput">
+            <span>Remember playback state</span>
+          </label>
+          <label class="checkbox-row">
+            <input type="checkbox" id="preferTheaterInput">
+            <span>Open videos in theater mode</span>
+          </label>
+          <label class="checkbox-row">
+            <input type="checkbox" id="autoplayNextInput">
+            <span>Autoplay next item in the active playlist</span>
+          </label>
+          <label class="checkbox-row">
+            <input type="checkbox" id="closeDetailsOnPlayInput">
+            <span>Close the details drawer when playback starts</span>
+          </label>
+        </div>
+      </section>
+
+      <section class="settings-card">
+        <h3>Database and cache</h3>
+        <div class="button-grid">
+          <button class="btn btn-secondary" id="exportStateButton" type="button">Export JSON DB</button>
+          <label class="btn btn-secondary import-label">
+            Import JSON DB
+            <input type="file" id="importStateInput" accept=".json,application/json">
+          </label>
+          <button class="btn btn-secondary" id="clearThumbCacheButton" type="button">Clear thumbnail cache</button>
+          <button class="btn btn-secondary danger-soft" id="clearSessionLinksButton" type="button">Clear session file links</button>
+          <button class="btn btn-secondary danger-soft" id="clearLibraryButton" type="button">Clear entire library</button>
+          <button class="btn btn-secondary danger-soft" id="clearDeleteLibraryButton" type="button">Clear and delete library</button>
+        </div>
+      </section>
+
+      <section class="settings-card">
+        <h3>Status</h3>
+        <div class="status-box" id="scanStatus">Ready.</div>
+      </section>
+    </div>
+
+    <div class="drawer-actions">
+      <button class="btn btn-secondary" id="discardSettingsButton" type="button">Close</button>
+      <button class="btn btn-primary" id="saveSettingsButton" type="button">Save settings</button>
+    </div>
+  </aside>
+
+  <div class="drawer-backdrop" id="detailsBackdrop" hidden></div>
+  <aside class="details-drawer" id="detailsDrawer" aria-hidden="true">
+    <div class="drawer-head">
+      <div>
+        <p class="eyebrow">Medium details</p>
+        <h2 id="detailsTitle">Details</h2>
+      </div>
+      <button class="icon-button close-drawer" id="closeDetailsButton" type="button" aria-label="Close details">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m18.3 5.71-1.41-1.42L12 9.17 7.11 4.29 5.7 5.71 10.58 10.6 5.7 15.49l1.41 1.41L12 12l4.89 4.9 1.41-1.41-4.88-4.89 4.88-4.89Z"/></svg>
+      </button>
+    </div>
+
+    <div class="details-content">
+      <div class="details-preview-card">
+        <img id="detailsPreviewImage" alt="" hidden>
+        <div id="detailsPreviewFallback" class="details-preview-fallback">No preview</div>
+      </div>
+
+      <div class="details-actions">
+        <button class="btn btn-primary" id="detailsPlayButton" type="button">Open medium</button>
+        <button class="btn btn-secondary" id="detailsFavoriteButton" type="button">Toggle favorite</button>
+      </div>
+
+      <div class="settings-grid">
+        <label>
+          <span>Tags</span>
+          <input type="text" id="detailsTagsInput" placeholder="Action, vacation, tutorial">
+        </label>
+        <label>
+          <span>Categories</span>
+          <input type="text" id="detailsCategoriesInput" placeholder="Movies, private, clips">
+        </label>
+        <label>
+          <span>Description</span>
+          <textarea id="detailsDescriptionInput" placeholder="Optional notes for this medium"></textarea>
+        </label>
+      </div>
+
+      <dl class="details-list" id="detailsList"></dl>
+    </div>
+
+    <div class="drawer-actions">
+      <button class="btn btn-secondary" id="closeDetailsFooterButton" type="button">Close</button>
+      <button class="btn btn-primary" id="saveDetailsButton" type="button">Save details</button>
+    </div>
+  </aside>
+
+  <section class="player-stage" id="playerStage" hidden>
+    <div class="player-stage-shell" id="playerStageShell">
+      <div class="player-stage-head">
+        <div class="player-stage-title">
+          <h3 id="playerTitle">Nothing playing</h3>
+          <p id="playerMeta" class="muted">Import a local media folder to begin.</p>
+        </div>
+        <div class="player-stage-actions">
+          <button class="icon-button" id="stageInfoButton" type="button" title="Open details">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 10h2v7h-2v-7Zm0-4h2v2h-2V6Zm1-4a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z"/></svg>
+          </button>
+          <button class="icon-button" id="fullscreenPlayerButton" type="button" title="Fullscreen">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14H5v5h5v-2H7v-3Zm0-4h2V7h3V5H5v5Zm10 7h-3v2h5v-5h-2v3Zm0-12V5h-5v2h3v3h2V5Z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="player-stage-body" id="playerStageBody">
+        <video id="mediaPlayer" playsinline preload="metadata"></video>
+        <img id="imageViewer" alt="" hidden>
+      </div>
+    </div>
+  </section>
+
+  <section class="player-dock" id="bottomPlayer" hidden>
+    <div class="dock-left">
+      <div class="player-mini-thumb" id="playerMiniThumb">MW</div>
+      <div class="dock-text">
+        <strong id="dockTitle">Nothing playing</strong>
+        <span id="dockMeta">Import a folder to start.</span>
+      </div>
+    </div>
+
+    <div class="dock-center">
+      <div class="transport-row">
+        <button class="icon-button" id="shuffleButton" type="button" title="Shuffle">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3h4v4h-2V5.41l-4.29 4.3-1.42-1.42L17.17 4H17V3ZM3 7h4.59l10 10H21v2h-4.59l-10-10H3V7Zm10.29 7.29 1.42-1.42L17.83 16H17v2h4v-4h-2v1.59l-5.71-5.7ZM7.41 17 3 12.59 4.41 11.17 8.83 15.6 7.41 17Zm9.18-9.18-1.42-1.41 2.01-2.01H17V3h4v4h-2V5.41l-2.41 2.41Z"/></svg>
+        </button>
+        <button class="icon-button" id="previousButton" type="button" title="Previous">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h2v12H6V6Zm3.5 6 8.5 6V6l-8.5 6Z"/></svg>
+        </button>
+        <button class="icon-button" id="rewindButton" type="button" title="Back 10 seconds">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m11 18-8-6 8-6v12Zm10 0-8-6 8-6v12Z"/></svg>
+        </button>
+        <button class="primary-play" id="playPauseButton" type="button" title="Play / pause">
+          <svg id="playPauseIcon" viewBox="0 0 24 24" aria-hidden="true"></svg>
+        </button>
+        <button class="icon-button" id="forwardButton" type="button" title="Forward 10 seconds">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m13 18 8-6-8-6v12ZM3 18l8-6-8-6v12Z"/></svg>
+        </button>
+        <button class="icon-button" id="nextButton" type="button" title="Next">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 6h2v12h-2V6ZM6 6v12l8.5-6L6 6Z"/></svg>
+        </button>
+        <button class="icon-button" id="repeatButton" type="button" title="Repeat off">
+          <span class="repeat-label">OFF</span>
+        </button>
+        <button class="icon-button favorite-accent" id="favoritePlayerButton" type="button" title="Toggle favorite">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 21.35-1.45-1.32C5.4 15.36 2 12.28 2 8.5A4.5 4.5 0 0 1 6.5 4C8.24 4 9.91 4.81 11 6.09 12.09 4.81 13.76 4 15.5 4A4.5 4.5 0 0 1 20 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35Z"/></svg>
+        </button>
+        <button class="icon-button accent-button" id="randomPlayerButton" type="button" title="Play random video">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3h4v4h-2V5.41l-4.29 4.3-1.42-1.42L17.17 4H17V3ZM3 7h4.59l10 10H21v2h-4.59l-10-10H3V7Zm10.29 7.29 1.42-1.42L17.83 16H17v2h4v-4h-2v1.59l-5.71-5.7ZM7.41 17 3 12.59 4.41 11.17 8.83 15.6 7.41 17Zm9.18-9.18-1.42-1.41 2.01-2.01H17V3h4v4h-2V5.41l-2.41 2.41Z"/></svg>
+        </button>
+      </div>
+
+      <div class="progress-row">
+        <span id="currentTimeLabel">0:00</span>
+        <input id="progressSlider" type="range" min="0" max="100" value="0">
+        <span id="durationLabel">0:00</span>
+      </div>
+    </div>
+
+    <div class="dock-right">
+      <div class="volume-group">
+        <button class="icon-button" id="muteButton" type="button" title="Mute">
+          <svg id="muteButtonIcon" viewBox="0 0 24 24" aria-hidden="true"></svg>
+        </button>
+        <input id="volumeSlider" type="range" min="0" max="100" value="85">
+      </div>
+      <div class="dock-window-controls">
+        <button class="icon-button" id="collapsePlayerButton" type="button" title="Collapse stage">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15h12v2H6v-2Zm0-8h12v2H6V7Z"/></svg>
+        </button>
+        <button class="icon-button" id="expandPlayerButton" type="button" title="Expand stage">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v2H6v5H4V4Zm10 0h6v7h-2V6h-4V4ZM6 16h5v2H4v-7h2v5Zm12-5h2v7h-6v-2h4v-5Z"/></svg>
+        </button>
+        <button class="icon-button" id="theaterPlayerButton" type="button" title="Theater mode">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Zm0 2v10h18V7H3Zm11 2h5v6h-5V9Z"/></svg>
+        </button>
+        <button class="icon-button" id="pipPlayerButton" type="button" title="Picture in picture">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Zm0 2v10h18V7H3Zm9 2h8v6h-8V9Z"/></svg>
+        </button>
+        <button class="icon-button" id="closePlayerButton" type="button" title="Close player">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m18.3 5.71-1.41-1.42L12 9.17 7.11 4.29 5.7 5.71 10.58 10.6 5.7 15.49l1.41 1.41L12 12l4.89 4.9 1.41-1.41-4.88-4.89 4.88-4.89Z"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <input type="file" id="videoFolderInput" hidden webkitdirectory directory multiple accept="video/*,image/*,.mp4,.mkv,.mov,.avi,.webm,.m4v,.mpg,.mpeg,.wmv,.jpg,.jpeg,.png,.webp,.avif">
+  <input type="file" id="imageFolderInput" hidden webkitdirectory directory multiple accept="image/*,.jpg,.jpeg,.png,.webp,.gif,.bmp,.avif,.svg">
+  <input type="file" id="categoriesFileInput" hidden accept=".txt,text/plain">
+
+  <template id="emptyStateTemplate">
+    <div class="empty-state">
+      <div class="empty-state-icon">MW</div>
+      <h3></h3>
+      <p></p>
+    </div>
+  </template>
+
+  <template id="cardTemplate">
+    <article class="media-card">
+      <div class="media-thumb-wrap">
+        <img class="media-thumb" alt="" hidden>
+        <div class="media-thumb-fallback">MW</div>
+        <div class="media-top-badges">
+          <span class="media-badge type-badge"></span>
+          <span class="media-badge unavailable-badge" hidden>Not linked</span>
+        </div>
+        <button class="favorite-toggle" data-action="favorite" type="button" title="Toggle favorite">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 21.35-1.45-1.32C5.4 15.36 2 12.28 2 8.5A4.5 4.5 0 0 1 6.5 4C8.24 4 9.91 4.81 11 6.09 12.09 4.81 13.76 4 15.5 4A4.5 4.5 0 0 1 20 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35Z"/></svg>
+        </button>
+      </div>
+      <div class="media-card-body">
+        <div class="media-copy">
+          <h3 class="media-title"></h3>
+          <p class="media-subtitle"></p>
+        </div>
+        <div class="media-actions">
+          <button class="icon-button media-action play-action" data-action="play" type="button" title="Open medium">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7L8 5Z"/></svg>
+          </button>
+          <button class="icon-button media-action details-action" data-action="details" type="button" title="Open details">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 10h2v7h-2v-7Zm0-4h2v2h-2V6Zm1-4a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z"/></svg>
+          </button>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <template id="folderCardTemplate">
+    <button class="folder-card" type="button">
+      <span class="folder-card-icon">F</span>
+      <span class="folder-card-copy">
+        <strong class="folder-card-title"></strong>
+        <span class="folder-card-meta"></span>
+      </span>
+      <span class="folder-card-arrow">›</span>
+    </button>
+  </template>
+
+  <template id="categoryCardTemplate">
+    <button class="category-card" type="button">
+      <span class="category-card-title"></span>
+      <span class="category-card-count"></span>
+    </button>
+  </template>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
+<!-- Copyright © sksdesign 2026 -->
